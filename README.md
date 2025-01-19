@@ -203,7 +203,6 @@ MetaData Backup/
    - Progress indicator will show status
    - Don't close the window during download
 
-```
 
 ## 📂 Output Details
 
