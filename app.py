@@ -1,170 +1,336 @@
-import subprocess
-import os
-import csv
-import json
-import re
-import time
-import sys
+# TikStash 📦
 
-# ASCII Art for TikStash
-ascii_art = r"""
-████████╗██╗██╗  ██╗███████╗████████╗ █████╗ ███████╗██╗  ██╗
-╚══██╔══╝██║██║ ██╔╝██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║  ██║
-   ██║   ██║█████╔╝ ███████╗   ██║   ███████║███████╗███████║
-   ██║   ██║██╔═██╗ ╚════██║   ██║   ██╔══██║╚════██║██╔══██║
-   ██║   ██║██║  ██╗███████║   ██║   ██║  ██║███████║██║  ██║
-   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-           💾 Backup • Archive • Preserve Your TikTok Content 📦
-                   [Channel Videos • Info • Metadata]
-"""
+> 💾 Backup • Archive • Preserve Your TikTok Content
 
-def get_video_info(tiktok_url):
-    """Retrieves TikTok video information in JSON format."""
-    try:
-        result = subprocess.run(
-            ["yt-dlp", "-j", tiktok_url],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        return json.loads(result.stdout)
-    except subprocess.CalledProcessError as e:
-        print(f"Error retrieving video information: {e}")
-        return None
-    except json.JSONDecodeError as e:
-        print(f"Error decoding video information: {e}")
-        return None
+TikStash is a user-friendly tool designed to help you create complete backups of TikTok channels. Whether you're a content creator wanting to preserve your work, or a user looking to save your favorite TikTok content locally, TikStash makes it simple and organized.
 
-def download_tiktok_videos(tiktok_url, channel_name, csv_writer, videos_backup_dir):
-    """Downloads all videos from a TikTok channel and saves the information to a CSV file."""
-    try:
-        # Get the list of videos without downloading them
-        result = subprocess.run(
-            ["yt-dlp", "-j", "--flat-playlist", tiktok_url],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        video_list = [json.loads(line) for line in result.stdout.strip().splitlines()]
+![logo](https://github.com/user-attachments/assets/56555249-65d3-4287-a624-c4ecdc6f25aa)
 
-        for video in video_list:
-            video_url = video.get('url')
-            if not video_url:
-                print(f"Could not get URL for video: {video.get('id')}")
-                continue
+## 🎯 Quick Start Guide (For Non-Technical Users)
 
-            video_info = get_video_info(video_url)
-            if video_info:
-                # Download the video to the "Videos Backup" directory
-                subprocess.run(
-                    [
-                        "yt-dlp",
-                        "-f",
-                        "bestvideo+bestaudio/best",
-                        "-o",
-                        os.path.join(videos_backup_dir, f"%(view_count)s_%(upload_date)s_{channel_name}_video_%(id)s.%(ext)s"),
-                        video_url,
-                    ],
-                    check=True,
-                )
+1. **Install Required Programs**
+   - Install Python from [python.org](https://www.python.org/downloads/)
+   - During Python installation, CHECK ✅ "Add Python to PATH"
+   - Open Command Prompt (Windows) or Terminal (Mac/Linux)
+   - Type: `pip install yt-dlp` and press Enter
 
-                # Write the information to the CSV file
-                csv_writer.writerow(
-                    [
-                        channel_name,
-                        video_info.get("view_count", ""),
-                        video_info.get("upload_date", ""),
-                        video_info.get("id", ""),
-                        video_info.get("description", "").replace("\n", " "),
-                        video_info.get("track", "")
-                        or video_info.get("title", "")
-                        or video_info.get("description", "").split(" ")[0],
-                        # Add more fields here if needed
-                    ]
-                )
+2. **Get TikStash**
+   - Download TikStash by clicking the green "Code" button above
+   - Choose "Download ZIP"
+   - Extract the ZIP file to your desktop
 
-    except subprocess.CalledProcessError as e:
-        print(f"Error downloading videos: {e}")
+3. **Run TikStash**
+   - Open the extracted folder
+   - Double-click `tikstash.py`
+   - Enter a TikTok username or URL when prompted
+   - Wait for the backup to complete!
 
-if __name__ == "__main__":
-    print(ascii_art)
-    # Prompt for the TikTok channel URL or username
-    tiktok_input = input("Enter the TikTok channel URL or username: ")
+Need more detailed instructions? Check the [Detailed Installation Guide](#-installation-guide) below.
 
-    # Determine if a URL or username was entered
-    if tiktok_input.startswith("https://"):
-        tiktok_url = tiktok_input
-        # Extract the username from the URL using a regular expression
-        match = re.search(r"@([a-zA-Z0-9_.-]+)", tiktok_url)
-        if match:
-            channel_name = match.group(1)
-        else:
-            print("Could not extract username from URL.")
-            exit()
-    else:
-        channel_name = tiktok_input
-        tiktok_url = f"https://www.tiktok.com/@{channel_name}"
+## 🌟 What is TikStash?
 
-    # Create "Videos Backup" and "MetaData Backup" directories if they don't exist
-    videos_backup_dir = "Videos Backup"
-    metadata_backup_dir = "MetaData Backup"
-    os.makedirs(videos_backup_dir, exist_ok=True)
-    os.makedirs(metadata_backup_dir, exist_ok=True)
+TikStash is a Python-based application that helps you:
+- Download all videos from any public TikTok channel
+- Save video metadata (views, dates, descriptions)
+- Organize content in a structured way
+- Create detailed spreadsheets of your content
+- Preserve your digital content locally
 
-    # CSV filename
-    csv_filename = os.path.join(metadata_backup_dir, f"{channel_name}_datainfo.csv")
+### 🎁 Key Benefits
+- **Content Safety**: Never lose your TikTok videos
+- **Organized Backup**: Everything sorted and labeled
+- **Easy to Use**: Simple command-line interface
+- **Detailed Information**: Complete metadata preservation
+- **Progress Tracking**: Real-time download status
 
-    # Open the CSV file in write mode
-    with open(csv_filename, "w", newline="", encoding="utf-8") as csvfile:
-        # Create the CSV writer object
-        csv_writer = csv.writer(csvfile)
+## 🔧 Technical Overview
 
-        # Write the header row
-        csv_writer.writerow(
-            [
-                "Channel Name",
-                "Views",
-                "Upload Date",
-                "Video ID",
-                "Description",
-                "Song/Sound Name",
-                # Add more headers here if needed
-            ]
-        )
+### Architecture and Components
 
-        # Get total number of videos with loading animation
-        print("Retrieving channel information, please wait", end="")
-        sys.stdout.flush()
-        start_time = time.time()
-        animation_chars = ["-", "\\", "|", "/"]
-        i = 0
+```plaintext
+TikStash
+├── Core Functions
+│   ├── get_video_info(): JSON metadata retrieval
+│   └── download_tiktok_videos(): Main download handler
+├── Data Management
+│   ├── Videos Backup/: Video storage directory
+│   └── MetaData Backup/: CSV data storage
+└── Input Processing
+    ├── URL validation
+    └── Username extraction
+```
 
-        # Ejecutar yt-dlp en un proceso separado
-        process = subprocess.Popen(
-            ["yt-dlp", "--get-filename", "-o", "%(id)s", tiktok_url],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
+### Technical Features
 
-        # Mostrar la animación mientras yt-dlp se ejecuta
-        while process.poll() is None:
-            print(f"\rRetrieving channel information, please wait {animation_chars[i % len(animation_chars)]}", end="")
-            sys.stdout.flush()
-            time.sleep(0.1)
-            i += 1
+- **Asynchronous Operations**: Uses subprocess for non-blocking operations
+- **Error Handling**: Comprehensive try-catch blocks for robust execution
+- **Progress Visualization**: Dynamic loading animation during operations
+- **File Management**: Automatic directory creation and organization
+- **Data Validation**: Input validation and URL pattern matching
+- **Resource Management**: Proper file handling with context managers
 
-        # Obtener la salida de yt-dlp
-        stdout, stderr = process.communicate()
-        total_videos = len(stdout.strip().split("\n"))
+### Output Structure
 
-        # Borrar la línea de la animación
-        print("\r" + " " * (40), end="\r")
-        sys.stdout.flush()
+#### Video Files
+```plaintext
+Videos Backup/
+└── {view_count}_{upload_date}_{channel_name}_video_{id}.{ext}
+```
 
-        print(f"The channel {tiktok_url} has a total of {total_videos} videos.")
+#### Metadata Files
+```plaintext
+MetaData Backup/
+└── {channel_name}_datainfo.csv
+```
 
-        # Download the videos and write the information to the CSV
-        download_tiktok_videos(tiktok_url, channel_name, csv_writer, videos_backup_dir)
+## 📋 Requirements
 
-    print(f"Download finished. Video information has been saved to '{csv_filename}'.")
+### Essential Software
+1. **Python 3.x**
+   - Windows: [Python's official website](https://www.python.org/downloads/)
+   - Mac: `brew install python3`
+   - Linux: `sudo apt-get install python3`
+
+2. **yt-dlp**
+   ```bash
+   pip install yt-dlp
+   ```
+
+### System Requirements
+- OS: Windows 7+ / macOS 10.13+ / Linux
+- RAM: 2GB minimum
+- Storage: Depends on videos to backup
+- Internet: Stable connection required
+
+## 🚀 Detailed Installation Guide
+
+### Windows Step-by-Step
+
+1. **Install Python**
+   - Download Python 3.x from [python.org](https://www.python.org/downloads/)
+   - Run the installer
+   - ✅ Check "Add Python to PATH"
+   - ✅ Check "Install launcher for all users"
+   - Click "Install Now"
+   - Wait for installation to complete
+   - Click "Close"
+
+2. **Verify Python Installation**
+   - Press `Win + R`
+   - Type `cmd` and press Enter
+   - In Command Prompt, type:
+     ```bash
+     python --version
+     ```
+   - You should see something like `Python 3.x.x`
+
+3. **Install yt-dlp**
+   - In the same Command Prompt, type:
+     ```bash
+     pip install yt-dlp
+     ```
+   - Wait for installation to complete
+
+4. **Download TikStash**
+   - Download ZIP from GitHub
+   - Right-click ZIP and select "Extract All"
+   - Choose a location (e.g., Desktop)
+   - Click "Extract"
+
+### macOS Step-by-Step
+
+1. **Install Homebrew (if not installed)**
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. **Install Python**
+   ```bash
+   brew install python3
+   ```
+
+3. **Install yt-dlp**
+   ```bash
+   pip3 install yt-dlp
+   ```
+
+4. **Download and Extract TikStash**
+   - Download ZIP from GitHub
+   - Double-click to extract
+   - Move to desired location
+
+### Linux Step-by-Step
+
+1. **Update Package Manager**
+   ```bash
+   sudo apt update
+   ```
+
+2. **Install Python and pip**
+   ```bash
+   sudo apt install python3 python3-pip
+   ```
+
+3. **Install yt-dlp**
+   ```bash
+   pip3 install yt-dlp
+   ```
+
+4. **Clone TikStash**
+   ```bash
+   git clone https://github.com/yourusername/tikstash.git
+   ```
+
+## 📱 Usage Guide
+
+### Basic Usage
+
+1. **Start TikStash**
+   - Windows: Double-click `tikstash.py` or run:
+     ```bash
+     python tikstash.py
+     ```
+   - Mac/Linux: Open Terminal and run:
+     ```bash
+     python3 tikstash.py
+     ```
+
+2. **Enter Channel Information**
+   - Use TikTok URL: `https://www.tiktok.com/@username`
+   - Or just username: `username`
+
+3. **Wait for Completion**
+   - Progress indicator will show status
+   - Don't close the window during download
+
+### Advanced Usage
+
+#### Command Line Arguments (Coming Soon)
+```bash
+python tikstash.py --channel @username --format mp4 --metadata-only
+```
+
+#### Configuration Options (Planned)
+```python
+config = {
+    "video_quality": "high",
+    "metadata_format": "csv",
+    "download_path": "./custom/path"
+}
+```
+
+## 📂 Output Details
+
+### Video Files
+- Located in: `Videos Backup/` directory
+- Naming convention: `views_date_channelname_videoid.mp4`
+- Example: `1000000_20230615_username_7123456789.mp4`
+
+### Metadata CSV
+- Located in: `MetaData Backup/` directory
+- Filename: `channelname_datainfo.csv`
+- Fields:
+  - Channel Name
+  - Views
+  - Upload Date
+  - Video ID
+  - Description
+  - Song/Sound Name
+
+## 🔧 Advanced Troubleshooting
+
+### Error Codes and Solutions
+
+1. **Error Code 1: Python Path Issues**
+   ```bash
+   'python' is not recognized...
+   ```
+   Solution: Add Python to system PATH
+
+2. **Error Code 2: yt-dlp Installation**
+   ```bash
+   No module named 'yt_dlp'
+   ```
+   Solution: Reinstall using pip with admin rights
+
+3. **Error Code 3: Permission Denied**
+   ```bash
+   PermissionError: [Errno 13]
+   ```
+   Solution: Run with appropriate permissions
+
+### Debug Mode (Coming Soon)
+```bash
+python tikstash.py --debug
+```
+
+## 🛡️ Technical Considerations
+
+### Performance Optimization
+- Asynchronous downloads
+- Progress tracking
+- Memory management
+- Error recovery
+
+### Security Considerations
+- Rate limiting compliance
+- API usage guidelines
+- Data validation
+- Safe file handling
+
+## 🔄 Development Workflow
+
+### Setting Up Development Environment
+1. Clone repository
+2. Install dependencies
+3. Set up virtual environment
+4. Run tests
+
+### Contributing Code
+1. Fork repository
+2. Create feature branch
+3. Implement changes
+4. Submit pull request
+
+## 📈 Roadmap
+
+### Version 1.1 (Current)
+- Basic download functionality
+- CSV metadata export
+- Progress tracking
+- Error handling
+
+### Version 1.2 (Planned)
+- GUI interface
+- Batch processing
+- Custom templates
+- Advanced filters
+
+## 💖 Support and Community
+
+### Getting Help
+- Create GitHub issue
+- Join Discord community
+- Check FAQ section
+- Email support
+
+### Supporting Development
+- Star repository
+- Report bugs
+- Submit features
+- Share project
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with Python
+- Powered by yt-dlp
+- Inspired by content preservation needs
+- Community contributions
+
+---
+
+Made with 💝 by [Jonathan Paz](https://www.linkedin.com/in/jonathanftw/)
