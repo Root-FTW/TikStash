@@ -203,20 +203,6 @@ MetaData Backup/
    - Progress indicator will show status
    - Don't close the window during download
 
-### Advanced Usage
-
-#### Command Line Arguments (Coming Soon)
-```bash
-python tikstash.py --channel @username --format mp4 --metadata-only
-```
-
-#### Configuration Options (Planned)
-```python
-config = {
-    "video_quality": "high",
-    "metadata_format": "csv",
-    "download_path": "./custom/path"
-}
 ```
 
 ## 📂 Output Details
