@@ -178,7 +178,7 @@ MetaData Backup/
 
 4. **Clone TikStash**
    ```bash
-   git clone https://github.com/yourusername/tikstash.git
+   git clone https://github.com/Root-FTW/tikstash.git
    ```
 
 ## 📱 Usage Guide
