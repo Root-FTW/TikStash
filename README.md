@@ -245,7 +245,6 @@ MetaData Backup/
    ```
    Solution: Run with appropriate permissions
 
-```
 
 ## 🛡️ Technical Considerations
 
