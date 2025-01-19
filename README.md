@@ -245,9 +245,6 @@ MetaData Backup/
    ```
    Solution: Run with appropriate permissions
 
-### Debug Mode (Coming Soon)
-```bash
-python tikstash.py --debug
 ```
 
 ## 🛡️ Technical Considerations
