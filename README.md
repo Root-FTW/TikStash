@@ -267,14 +267,10 @@ python tikstash.py --debug
 ## 🛡️ Technical Considerations
 
 ### Performance Optimization
-- Asynchronous downloads
 - Progress tracking
-- Memory management
 - Error recovery
 
 ### Security Considerations
-- Rate limiting compliance
-- API usage guidelines
 - Data validation
 - Safe file handling
 
@@ -295,7 +291,7 @@ python tikstash.py --debug
 ## 📈 Roadmap
 
 ### Version 1.1 (Current)
-- Basic download functionality
+- Dwnload functionality
 - CSV metadata export
 - Progress tracking
 - Error handling
@@ -310,8 +306,7 @@ python tikstash.py --debug
 
 ### Getting Help
 - Create GitHub issue
-- Join Discord community
-- Check FAQ section
+- LinkedIn support
 - Email support
 
 ### Supporting Development
