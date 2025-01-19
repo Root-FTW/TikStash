@@ -6,193 +6,330 @@ TikStash is a user-friendly tool designed to help you create complete backups of
 
 ![logo](https://github.com/user-attachments/assets/56555249-65d3-4287-a624-c4ecdc6f25aa)
 
+## 🎯 Quick Start Guide (For Non-Technical Users)
+
+1. **Install Required Programs**
+   - Install Python from [python.org](https://www.python.org/downloads/)
+   - During Python installation, CHECK ✅ "Add Python to PATH"
+   - Open Command Prompt (Windows) or Terminal (Mac/Linux)
+   - Type: `pip install yt-dlp` and press Enter
+
+2. **Get TikStash**
+   - Download TikStash by clicking the green "Code" button above
+   - Choose "Download ZIP"
+   - Extract the ZIP file to your desktop
+
+3. **Run TikStash**
+   - Open the extracted folder
+   - Double-click `tikstash.py`
+   - Enter a TikTok username or URL when prompted
+   - Wait for the backup to complete!
+
+Need more detailed instructions? Check the [Detailed Installation Guide](#-installation-guide) below.
 
 ## 🌟 What is TikStash?
 
-TikStash is a Python-based application that allows you to:
-- Download all videos from any TikTok channel
-- Save important information about each video (views, upload dates, descriptions, etc.)
-- Organize videos in a clean, structured way
+TikStash is a Python-based application that helps you:
+- Download all videos from any public TikTok channel
+- Save video metadata (views, dates, descriptions)
+- Organize content in a structured way
 - Create detailed spreadsheets of your content
+- Preserve your digital content locally
+
+### 🎁 Key Benefits
+- **Content Safety**: Never lose your TikTok videos
+- **Organized Backup**: Everything sorted and labeled
+- **Easy to Use**: Simple command-line interface
+- **Detailed Information**: Complete metadata preservation
+- **Progress Tracking**: Real-time download status
+
+## 🔧 Technical Overview
+
+### Architecture and Components
+
+```plaintext
+TikStash
+├── Core Functions
+│   ├── get_video_info(): JSON metadata retrieval
+│   └── download_tiktok_videos(): Main download handler
+├── Data Management
+│   ├── Videos Backup/: Video storage directory
+│   └── MetaData Backup/: CSV data storage
+└── Input Processing
+    ├── URL validation
+    └── Username extraction
+```
+
+### Technical Features
+
+- **Asynchronous Operations**: Uses subprocess for non-blocking operations
+- **Error Handling**: Comprehensive try-catch blocks for robust execution
+- **Progress Visualization**: Dynamic loading animation during operations
+- **File Management**: Automatic directory creation and organization
+- **Data Validation**: Input validation and URL pattern matching
+- **Resource Management**: Proper file handling with context managers
+
+### Output Structure
+
+#### Video Files
+```plaintext
+Videos Backup/
+└── {view_count}_{upload_date}_{channel_name}_video_{id}.{ext}
+```
+
+#### Metadata Files
+```plaintext
+MetaData Backup/
+└── {channel_name}_datainfo.csv
+```
 
 ## 📋 Requirements
 
-Before you start using TikStash, you'll need to have these installed on your computer:
-
 ### Essential Software
 1. **Python 3.x**
-   - Windows: Download from [Python's official website](https://www.python.org/downloads/)
-   - Mac: Usually pre-installed, or use Homebrew: `brew install python3`
-   - Linux: Usually pre-installed, or use: `sudo apt-get install python3`
+   - Windows: [Python's official website](https://www.python.org/downloads/)
+   - Mac: `brew install python3`
+   - Linux: `sudo apt-get install python3`
 
 2. **yt-dlp**
-   - After installing Python, open your terminal/command prompt and run:
+   ```bash
+   pip install yt-dlp
+   ```
+
+### System Requirements
+- OS: Windows 7+ / macOS 10.13+ / Linux
+- RAM: 2GB minimum
+- Storage: Depends on videos to backup
+- Internet: Stable connection required
+
+## 🚀 Detailed Installation Guide
+
+### Windows Step-by-Step
+
+1. **Install Python**
+   - Download Python 3.x from [python.org](https://www.python.org/downloads/)
+   - Run the installer
+   - ✅ Check "Add Python to PATH"
+   - ✅ Check "Install launcher for all users"
+   - Click "Install Now"
+   - Wait for installation to complete
+   - Click "Close"
+
+2. **Verify Python Installation**
+   - Press `Win + R`
+   - Type `cmd` and press Enter
+   - In Command Prompt, type:
+     ```bash
+     python --version
+     ```
+   - You should see something like `Python 3.x.x`
+
+3. **Install yt-dlp**
+   - In the same Command Prompt, type:
      ```bash
      pip install yt-dlp
      ```
+   - Wait for installation to complete
 
-## 🚀 Installation Guide
+4. **Download TikStash**
+   - Download ZIP from GitHub
+   - Right-click ZIP and select "Extract All"
+   - Choose a location (e.g., Desktop)
+   - Click "Extract"
 
-### For Windows Users:
+### macOS Step-by-Step
 
-1. **Download the Project**
-   - Click the green "Code" button above
-   - Select "Download ZIP"
-   - Extract the ZIP file to a folder on your computer
+1. **Install Homebrew (if not installed)**
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
 
 2. **Install Python**
-   - Download Python from [python.org](https://www.python.org/downloads/)
-   - During installation, make sure to check ✅ "Add Python to PATH"
-   - Click "Install Now"
-
-3. **Install Required Tools**
-   - Open Command Prompt (search for "cmd" in Start menu)
-   - Type this command and press Enter:
-     ```bash
-     pip install yt-dlp
-     ```
-
-### For Mac Users:
-
-1. **Download the Project**
-   - Click the green "Code" button above
-   - Select "Download ZIP"
-   - Extract the ZIP file
-
-2. **Install Python (if not installed)**
    ```bash
    brew install python3
    ```
 
-3. **Install Required Tools**
+3. **Install yt-dlp**
    ```bash
    pip3 install yt-dlp
    ```
 
-### For Linux Users:
+4. **Download and Extract TikStash**
+   - Download ZIP from GitHub
+   - Double-click to extract
+   - Move to desired location
 
-1. **Download the Project**
+### Linux Step-by-Step
+
+1. **Update Package Manager**
+   ```bash
+   sudo apt update
+   ```
+
+2. **Install Python and pip**
+   ```bash
+   sudo apt install python3 python3-pip
+   ```
+
+3. **Install yt-dlp**
+   ```bash
+   pip3 install yt-dlp
+   ```
+
+4. **Clone TikStash**
    ```bash
    git clone https://github.com/yourusername/tikstash.git
    ```
 
-2. **Install Required Tools**
+## 📱 Usage Guide
+
+### Basic Usage
+
+1. **Start TikStash**
+   - Windows: Double-click `tikstash.py` or run:
+     ```bash
+     python tikstash.py
+     ```
+   - Mac/Linux: Open Terminal and run:
+     ```bash
+     python3 tikstash.py
+     ```
+
+2. **Enter Channel Information**
+   - Use TikTok URL: `https://www.tiktok.com/@username`
+   - Or just username: `username`
+
+3. **Wait for Completion**
+   - Progress indicator will show status
+   - Don't close the window during download
+
+### Advanced Usage
+
+#### Command Line Arguments (Coming Soon)
+```bash
+python tikstash.py --channel @username --format mp4 --metadata-only
+```
+
+#### Configuration Options (Planned)
+```python
+config = {
+    "video_quality": "high",
+    "metadata_format": "csv",
+    "download_path": "./custom/path"
+}
+```
+
+## 📂 Output Details
+
+### Video Files
+- Located in: `Videos Backup/` directory
+- Naming convention: `views_date_channelname_videoid.mp4`
+- Example: `1000000_20230615_username_7123456789.mp4`
+
+### Metadata CSV
+- Located in: `MetaData Backup/` directory
+- Filename: `channelname_datainfo.csv`
+- Fields:
+  - Channel Name
+  - Views
+  - Upload Date
+  - Video ID
+  - Description
+  - Song/Sound Name
+
+## 🔧 Advanced Troubleshooting
+
+### Error Codes and Solutions
+
+1. **Error Code 1: Python Path Issues**
    ```bash
-   sudo apt update
-   sudo apt install python3 python3-pip
-   pip3 install yt-dlp
+   'python' is not recognized...
    ```
+   Solution: Add Python to system PATH
 
-## 📱 How to Use
-
-1. **Open Your Terminal/Command Prompt**
-   - Windows: Press `Win + R`, type `cmd`, press Enter
-   - Mac/Linux: Open Terminal app
-
-2. **Navigate to TikStash Folder**
+2. **Error Code 2: yt-dlp Installation**
    ```bash
-   cd path/to/tikstash
+   No module named 'yt_dlp'
    ```
+   Solution: Reinstall using pip with admin rights
 
-3. **Run the Program**
+3. **Error Code 3: Permission Denied**
    ```bash
-   python tikstash.py
+   PermissionError: [Errno 13]
    ```
+   Solution: Run with appropriate permissions
 
-4. **Follow the Prompts**
-   - Enter a TikTok channel URL (e.g., https://www.tiktok.com/@username)
-   - OR just enter the username (e.g., username)
-   - The program will start downloading videos and creating your backup
+### Debug Mode (Coming Soon)
+```bash
+python tikstash.py --debug
+```
 
-## 📂 Understanding the Output
+## 🛡️ Technical Considerations
 
-TikStash creates two types of files:
+### Performance Optimization
+- Asynchronous downloads
+- Progress tracking
+- Memory management
+- Error recovery
 
-1. **Video Files**
-   - Format: `views_date_channelname_videoid.mp4`
-   - Example: `1000000_20230615_username_7123456789.mp4`
+### Security Considerations
+- Rate limiting compliance
+- API usage guidelines
+- Data validation
+- Safe file handling
 
-2. **CSV Spreadsheet**
-   - Name: `channelname_videos.csv`
-   - Contains:
-     - Channel name
-     - View count
-     - Upload date
-     - Video ID
-     - Description
-     - Location
-     - Sound/music used
+## 🔄 Development Workflow
 
-## 🔧 Troubleshooting
+### Setting Up Development Environment
+1. Clone repository
+2. Install dependencies
+3. Set up virtual environment
+4. Run tests
 
-### Common Issues and Solutions
+### Contributing Code
+1. Fork repository
+2. Create feature branch
+3. Implement changes
+4. Submit pull request
 
-1. **"Python is not recognized..."**
-   - Solution: Reinstall Python and make sure to check "Add Python to PATH"
+## 📈 Roadmap
 
-2. **"yt-dlp is not recognized..."**
-   - Solution: Run `pip install yt-dlp` again
-
-3. **Download Errors**
-   - Check your internet connection
-   - Verify the TikTok URL is correct
-   - Make sure the account is public
-
-### Still Having Problems?
-- Create an issue on GitHub
-- Include the error message
-- Describe what you were trying to do
-
-## 🛡️ Important Notes
-
-- Only use TikStash for content you have permission to download
-- Some TikTok accounts may be private and inaccessible
-- Download speeds depend on your internet connection
-- Very large accounts may take significant time to backup
-
-## 📈 Features
-
-### Current Features
-- Complete channel downloads
-- Metadata preservation
-- Organized file naming
-- CSV data export
+### Version 1.1 (Current)
+- Basic download functionality
+- CSV metadata export
 - Progress tracking
 - Error handling
 
-### Planned Features
+### Version 1.2 (Planned)
 - GUI interface
-- Selective video download
-- Multiple account backup
-- Custom naming templates
-- Advanced filtering options
+- Batch processing
+- Custom templates
+- Advanced filters
 
-## 🤝 Contributing
+## 💖 Support and Community
 
-Want to improve TikStash? Here's how you can help:
+### Getting Help
+- Create GitHub issue
+- Join Discord community
+- Check FAQ section
+- Email support
 
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Submit a pull request
+### Supporting Development
+- Star repository
+- Report bugs
+- Submit features
+- Share project
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 💖 Support the Project
-
-If you find TikStash useful, please:
-- Star the repository
-- Share it with others
-- Report any issues you find
-- Contribute improvements
+This project is licensed under the MIT License. See [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
 - Built with Python
-- Uses yt-dlp for downloading
-- Inspired by the need for reliable TikTok content backup
+- Powered by yt-dlp
+- Inspired by content preservation needs
+- Community contributions
 
 ---
 
